@@ -85,5 +85,6 @@
 
 	<modules>
 		<module>pulse-monitoring-analyzer</module>
+		<module>pulse-monitoring-avg-reducer</module>
 	</modules>
 </project>
