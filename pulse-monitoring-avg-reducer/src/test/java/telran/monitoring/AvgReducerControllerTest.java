@@ -58,8 +58,3 @@ void mockingService() {
 	}
 
 }
-//ObjectMapper mapper = new ObjectMapper();
-//PulseJump jump = mapper.readValue(message.getPayload(), PulseJump.class);
-////assertEquals(pulseJump, jump);	
-//assertTrue(pulseJump.equals(jump));
-//}
