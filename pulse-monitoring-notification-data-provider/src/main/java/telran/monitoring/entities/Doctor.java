@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Table(name="doctors")
 public class Doctor {
 	@Id
-	@Column(name = "did")
+	@Column(name = "doctor_email")
 	String email;
 	String name;
 	

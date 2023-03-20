@@ -29,8 +29,10 @@ public class DataProviderServiceImpl implements DataProviderService {
 	
 	@Override
 	public NotificationData getNotificationData(long patientId) {
-		LOG.info("notification data: {}", visitRepository.getPatientLastVisitById(patientId));
-		return visitRepository.getPatientLastVisitById(patientId);
+		String doctorEmail = visitRepository.getDoctorEmail(patientId);
+		String doctorName = doctorRepository.findById(doctorEmail).get().getName();
+		String patientName = patientRepository.findById(patientId).get().getName();
+		return new NotificationData(doctorEmail, doctorName, patientName);
 	}
 
 }

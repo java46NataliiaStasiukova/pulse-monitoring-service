@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Table(name="patients")
 public class Patient {
 	@Id
-	@Column(name="pid")
+	@Column(name="patient_id")
 	long id;
 	
 	String name;

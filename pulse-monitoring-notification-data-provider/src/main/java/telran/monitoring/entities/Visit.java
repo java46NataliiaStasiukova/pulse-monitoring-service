@@ -5,18 +5,18 @@ import java.time.LocalDate;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="visits")
+@Table(name="visits", indexes = {@Index(columnList = "patient_id")})//quick search by patient id
 public class Visit {
 	@Id 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//strategy that configure database
     long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "did")
+	@JoinColumn(name = "doctor_email")
 	Doctor doctor;
 	
 	@ManyToOne
-	@JoinColumn(name = "pid")
+	@JoinColumn(name = "patient_id")
 	Patient patient;
 	
     LocalDate date;
