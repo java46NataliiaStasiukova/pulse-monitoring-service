@@ -20,7 +20,7 @@ public class AvgReducerAppl {
 	AvgReducerService reducerService;
 	@Autowired
 	StreamBridge streamBridge;
-	@Value("${app.binding.name:average-out-0}")
+	@Value("${app.avg.binding.name}")//:average-out-0}")
 	private String bindingName;
 	
 
