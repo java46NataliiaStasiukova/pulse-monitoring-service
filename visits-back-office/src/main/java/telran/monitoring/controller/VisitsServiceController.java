@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import telran.monitoring.VisitsService;
-import telran.monitoring.model.DoctorDto;
-import telran.monitoring.model.PatientDto;
-import telran.monitoring.model.VisitDto;
+import telran.monitoring.service.VisitsService;
+import telran.monitoring.dto.*;
 
 @RestController
 @RequestMapping("data")

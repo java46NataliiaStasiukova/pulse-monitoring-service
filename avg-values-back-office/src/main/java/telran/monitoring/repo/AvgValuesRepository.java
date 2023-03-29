@@ -1,5 +1,10 @@
 package telran.monitoring.repo;
 
-public class AvgValuesRepository {//extends JpaRepository<>{
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+import telran.monitoring.entities.AvgPulseDoc;
+
+public interface AvgValuesRepository extends MongoRepository<AvgPulseDoc, ObjectId>{
 
 }

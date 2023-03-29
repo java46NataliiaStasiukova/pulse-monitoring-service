@@ -26,26 +26,30 @@ public class AvgReducerServiceImpl implements AvgReducerService {
 	@Override
 	@Transactional
 	public Integer reduce(PulseProbe probe) {
-		Integer res = null;
-		ProbesList probesList = probesListRepository.findById(probe.patientId).orElse(null);
-		if(probesList != null) {
+		ProbesList probesList = probesListRepository.findById(probe.patientId)
+				.orElse(null);
+		Integer avgValue = null;
+		if (probesList == null) {
+			LOG.debug("for patient {} no saved pulse values", probe.patientId);
 			probesList = new ProbesList(probe.patientId);
 		} else {
-			//log
+			LOG.trace("for patient {} number of saved pulse values is {}",
+					probesList.getPatientId(), probesList.getPulseValues().size());
 		}
 		List<Integer> pulseValues = probesList.getPulseValues();
 		pulseValues.add(probe.value);
-		if(pulseValues.size() >= reducingSize) {
-			res = pulseValues.stream().collect(Collectors.averagingInt(x -> x)).intValue();
+		if (pulseValues.size() >= reducingSize) {
+			 avgValue = pulseValues.stream().collect(Collectors.averagingInt(x -> x)).intValue();
 			pulseValues.clear();
 		}
 		probesListRepository.save(probesList);
-		return res;
+		return avgValue;
+		
 	}
 	
 	@PostConstruct
 	void inintDebugInfo() {
-		LOG.debug("reducing size is {}", reducingSize);
+		LOG.debug("##reducing size is {}", reducingSize);
 	}
 
 }

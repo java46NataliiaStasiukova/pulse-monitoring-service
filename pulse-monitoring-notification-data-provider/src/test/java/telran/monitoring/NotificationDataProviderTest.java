@@ -23,7 +23,7 @@ class NotificationDataProviderTest {
 	MockMvc mockMvc;// imitator of web server
 
 	@Test
-	@Sql(scripts = {"classpath:DoctorsPatientsVisits.sql"})
+	@Sql(scripts = {"DoctorsPatientsVisits.sql"})
 	void test() throws Exception {
 		String jsonResponse = mockMvc.perform(get("/data/123"))
 				.andExpect(status().isOk()).andReturn().getResponse()

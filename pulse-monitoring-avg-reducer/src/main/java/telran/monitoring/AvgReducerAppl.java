@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.annotation.Bean;
 
-import telran.monitoring.model.PulseJump;
 import telran.monitoring.model.PulseProbe;
 import telran.monitoring.service.AvgReducerService;
 
@@ -20,7 +19,7 @@ public class AvgReducerAppl {
 	AvgReducerService reducerService;
 	@Autowired
 	StreamBridge streamBridge;
-	@Value("${app.avg.binding.name}")//:average-out-0}")
+	@Value("${app.avg.binding.name}")
 	private String bindingName;
 	
 

@@ -17,7 +17,6 @@ public class ProbesList {
 	public ProbesList(long patientId) {
 		super();
 		this.patientId = patientId;
-		//this.pulseValues = pulseValues;
 	}
 	
 	public ProbesList() {
