@@ -24,28 +24,28 @@ public class VisitsServiceController {
 	VisitsService visitsService;
 	private static Logger LOG = LoggerFactory.getLogger(VisitsServiceController.class);
 	
-	@PostMapping
+	@PostMapping("/patients")
 	String addPatient(@RequestBody @Valid PatientDto patient) {
 		visitsService.addPatient(patient);
 		return String.format("patient %s was added", patient.toString());
 	}
 	
-	@PostMapping
+	@PostMapping("/doctors")
 	String addDoctor(@RequestBody @Valid DoctorDto doctor) {
 		visitsService.addDoctor(doctor);
 		return String.format("doctor was added", doctor.toString());
 	}
 	
-	@PostMapping
+	@PostMapping("/visits")
 	String addVisit(@RequestBody @Valid VisitDto visit) {
 		visitsService.addVisit(visit);
 		return String.format("visit %s was added", visit.toString());
 	}
 	
-	@GetMapping
+	@GetMapping("/visits")
 	List<VisitDto> getVisitsData(@RequestParam(name = "patientId") long patientId,
-			@RequestParam(name = "dateFrom", defaultValue = "") LocalDate from,
-			@RequestParam(name = "dateTo", defaultValue = "") LocalDate to){
+			@RequestParam(name = "dateFrom", defaultValue = "", required = false) LocalDate from,
+			@RequestParam(name = "dateTo", defaultValue = "", required = false) LocalDate to){
 		
 		return from == null || to == null ? visitsService.getAllVisits(patientId) : 
 			visitsService.getVisitsDates(patientId, from, to);

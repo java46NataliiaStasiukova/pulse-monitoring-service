@@ -45,13 +45,13 @@ public class VisitsServiceImpl implements VisitsService {
 	@Override
 	public List<VisitDto> getAllVisits(long patientId) {
 		
-		return null;//visitRepository.findVisitsByPatientId(patientId);
+		return visitRepository.findVisitsByPatientId(patientId);
 	}
 
 	@Override
 	public List<VisitDto> getVisitsDates(long patientId, LocalDate from, LocalDate to) {
 		
-		return null;
+		return visitRepository.findVisitsByPatientId(patientId, from, to);
 	}
 
 }
