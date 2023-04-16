@@ -13,31 +13,32 @@ import telran.monitoring.repo.LastProbeRepository;
 
 @Service
 public class AnalyzerServiceImpl implements AnalyzerService {
+
+	static Logger LOG = LoggerFactory.getLogger(AnalyzerService.class);
 	@Autowired
-	LastProbeRepository lastProbeRepository;
+LastProbeRepository lastProbeRepository;
 	@Value("${app.jump.threshold:0.3}")
 	double jumpThreshold;
-	private static Logger LOG = LoggerFactory.getLogger(AnalyzerServiceImpl.class);
-
 	@Override
 	@Transactional
 	public PulseJump processPulseProbe(PulseProbe probe) {
 		PulseJump res = null;
-		LastProbe lastProbe = lastProbeRepository.findById(probe.patientId).orElse(null);
-		if(lastProbe == null) {
+		LastProbe lastProbe =
+				lastProbeRepository.findById(probe.patientId).orElse(null);
+		if (lastProbe == null) {
+			LOG.debug("*analyzer* for patient {} no saved values", probe.patientId);
 			lastProbe = new LastProbe(probe.patientId, probe.value);
-			LOG.trace("no jump, last probe equals current probe: {}", lastProbe.toString());
-		} else if(isJump(lastProbe.getValue(), probe.value)){
+		} else if (isJump(lastProbe.getValue(), probe.value)){
 			res = new PulseJump(probe.patientId, lastProbe.getValue(), probe.value);
-			LOG.debug("new pulse jump: {}", res.toString());
+			LOG.debug("*analyzer* jump: patientId is {} previous value is {}, current value is {}",probe.patientId,
+					lastProbe.getValue(), probe.value);
 		}
-		LOG.trace("lastProbe value for patient {} lastValue {}", lastProbe.getPatientId(), 
-				lastProbe.getValue());
+		LOG.debug("*analyzer* lastProbe value for patient {} last value {}", lastProbe.getPatientId(), lastProbe.getValue());
 		lastProbe.setValue(probe.value);
 		lastProbeRepository.save(lastProbe);
 		return res;
 	}
-
+	
 	private boolean isJump(int lastValue, int currentValue) {
 		int delta = Math.abs(currentValue - lastValue);
 		return delta >= lastValue * jumpThreshold;

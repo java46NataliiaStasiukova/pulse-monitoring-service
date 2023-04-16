@@ -11,54 +11,70 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import jakarta.annotation.PreDestroy;
 import telran.monitoring.model.*;
 import telran.monitoring.service.NotificationDataProvider;
 
 @SpringBootApplication
 public class JumpsNotifierAppl {
 	static Logger LOG = LoggerFactory.getLogger(JumpsNotifierAppl.class);
-	
-	@Autowired
-	JavaMailSender mailSender;
-	@Autowired
-	NotificationDataProvider dataProvider;
-	@Value("${app.mail.subject:Pulse Jump Notitfication}")
-	String subject;
+@Autowired	
+JavaMailSender mailSender;
+@Autowired	
+NotificationDataProvider dataProvider;
+@Value("${app.mail.subject: Pulse Jump Notification}")
+String subject;
+@Value("${app.mail.address.hospital.service:hospital-service@gmail.com}")
+String hospitalServiceEmail;
 
 	public static void main(String[] args) {
-		
 		SpringApplication.run(JumpsNotifierAppl.class, args);
+
 	}
 	
 	@Bean
 	Consumer<PulseJump> jumpsConsumer() {
-		
 		return this::jumpProcessing;
 	}
+
 	
 	void jumpProcessing(PulseJump jump) {
-		LOG.trace("received jump: {}", jump);
+		LOG.trace("*notifier* received jump {}", jump);
 		sendMail(jump);
 	}
-
-
+	
 	private void sendMail(PulseJump jump) {
 		NotificationData data = dataProvider.getData(jump.patientId);
+		if(data == null) {
+			LOG.warn("*notifier* mail will be sent to the emergency service");
+			data.doctorEmail = hospitalServiceEmail;
+			data.doctorName = "Hospital Service";
+			data.patientName = "";
+		}
 		SimpleMailMessage smm = new SimpleMailMessage();
 		smm.setTo(data.doctorEmail);
 		smm.setSubject(subject + " " + data.patientName);
-		String text = getMailText(jump, data);
+		String text = getMailText(jump, data, jump.patientId);
 		smm.setText(text);
 		mailSender.send(smm);
-		LOG.trace("sent text mail {}", text);
-	}
-
-
-	private String getMailText(PulseJump jump, NotificationData data) {
+		LOG.trace("*notifier* sent text mail {}",text);
 		
-		return String.format("Dear Dr. %s\nPatient %s has pulse jump:\n"
-				+ "previos value: %d; current value: %d\n", data.doctorName, 
-				data.patientName, jump.prevValue, jump.currentValue);
+	}
+	
+	private String getMailText(PulseJump jump, NotificationData data, long patientId) {
+		String res = "Notification Data Provider Service has not sent"
+				+ " data for patient " + patientId;
+		if (!data.patientName.isEmpty()) {
+			res = String.format("Dear Dr. %s\nPatient %s has pulse jump\n"
+					+ "previous value: %d; current value: %d\n",
+					data.doctorName, data.patientName, jump.prevValue, jump.currentValue);
+		}
+		return res;
+	}
+	
+	@PreDestroy
+	void preDestroy() {
+		System.out.println("JumpsNotifier - shutdown has been performed");
 	}
 
 }

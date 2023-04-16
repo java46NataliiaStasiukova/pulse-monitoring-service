@@ -29,7 +29,7 @@ class AvgValuesControllerTest {
 	
 	@BeforeEach
 	void mockingService() {
-		when(service.getAvgValue(PATIENT_ID)).thenReturn(AVG_VALUE);
+		when(service.getAvgPulseValue(PATIENT_ID)).thenReturn(AVG_VALUE);
 	}
 
 	@Test

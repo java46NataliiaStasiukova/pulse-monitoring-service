@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import jakarta.annotation.PreDestroy;
 import telran.monitoring.entities.AvgPulseDoc;
 import telran.monitoring.model.PulseProbe;
 import telran.monitoring.repo.AvgPulseRepository;
@@ -32,9 +33,14 @@ public class AvgPopulatorAppl {
 	}
 	
 	void getAvgPulseConsumer(PulseProbe pulseProbe) {
-		LOG.trace("received pulse probe of patient {}", pulseProbe.patientId);
+		LOG.trace("*avg-populator* received pulse probe of patient {}", pulseProbe.patientId);
 		AvgPulseDoc pulseDoc = AvgPulseDoc.of(pulseProbe);
 		avgPulseRepository.save(pulseDoc);
+	}
+	
+	@PreDestroy
+	void preDestroy() {
+		System.out.println("AvgPopulator - shutdown has been performed");
 	}
 
 

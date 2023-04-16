@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.stream.binder.test.InputDestination;
@@ -40,6 +41,10 @@ class AnalyzerControllerTest {
 	PulseProbe probeJump = new PulseProbe (2, 0, 0, 200);
 	PulseJump pulseJump = new PulseJump(2, 0, 200);
 	
+	String bindingNameProducer = "pulseProbConsumer-in-0";
+	@Value("${app.jumps.binding.name}")
+	String bindingNameConsumer;
+	
 	@BeforeEach
 	void mockingService() {
 		when(service.processPulseProbe(probeJump)).thenReturn(pulseJump);
@@ -47,21 +52,16 @@ class AnalyzerControllerTest {
 	}
 	
 	@Test
-	void test() {
-		
-	}
-	
-	@Test
 	void receivingProbNoJump() {
-		producer.send(new GenericMessage<PulseProbe>(probeNoJump));//, "pulseProbeConsumer-in-0"
-		Message<byte[]> message = consumer.receive(10, "jumps-out-0");
+		producer.send(new GenericMessage<PulseProbe>(probeNoJump), bindingNameProducer);
+		Message<byte[]> message = consumer.receive(10, bindingNameConsumer);
 		assertNull(message);
 	}
 	
 	@Test
 	void receivingProbJump() throws StreamReadException, DatabindException, IOException {
-		producer.send(new GenericMessage<PulseProbe>(probeJump));//, "pulseProbeConsumer-in-0"
-		Message<byte[]> message = consumer.receive(10, "jumps-out-0");
+		producer.send(new GenericMessage<PulseProbe>(probeJump), bindingNameProducer);
+		Message<byte[]> message = consumer.receive(10, bindingNameConsumer);
 		assertNotNull(message);
 		ObjectMapper mapper = new ObjectMapper();
 		PulseJump jump = mapper.readValue(message.getPayload(), PulseJump.class);

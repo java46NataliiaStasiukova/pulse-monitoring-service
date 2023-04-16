@@ -30,16 +30,16 @@ public class AvgReducerServiceImpl implements AvgReducerService {
 				.orElse(null);
 		Integer avgValue = null;
 		if (probesList == null) {
-			LOG.debug("for patient {} no saved pulse values", probe.patientId);
+			LOG.debug("*avg-reducer* for patient {} no saved pulse values", probe.patientId);
 			probesList = new ProbesList(probe.patientId);
 		} else {
-			LOG.trace("for patient {} number of saved pulse values is {}",
+			LOG.trace("*avg-reducer* for patient {} number of saved pulse values is {}",
 					probesList.getPatientId(), probesList.getPulseValues().size());
 		}
 		List<Integer> pulseValues = probesList.getPulseValues();
 		pulseValues.add(probe.value);
 		if (pulseValues.size() >= reducingSize) {
-			 avgValue = pulseValues.stream().collect(Collectors.averagingInt(x -> x)).intValue();
+			avgValue = pulseValues.stream().collect(Collectors.averagingInt(x -> x)).intValue();
 			pulseValues.clear();
 		}
 		probesListRepository.save(probesList);
@@ -49,7 +49,7 @@ public class AvgReducerServiceImpl implements AvgReducerService {
 	
 	@PostConstruct
 	void inintDebugInfo() {
-		LOG.debug("##reducing size is {}", reducingSize);
+		LOG.debug("*avg-reducer* reducing size is {}", reducingSize);
 	}
 
 }

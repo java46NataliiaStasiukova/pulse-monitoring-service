@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 public interface AvgValuesService {
 	
-	int getAvgValue(long patientId, LocalDateTime from, LocalDateTime to);
+	int getAvgPulseValue(long patientId);
 	
-	int getAvgValue(Long patientId);
+	int getAvgPulseValueDates(long patientId, LocalDateTime from, LocalDateTime to);
 
 }

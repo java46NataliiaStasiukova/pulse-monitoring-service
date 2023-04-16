@@ -17,6 +17,7 @@ public class DataProviderController {
 	
 	@GetMapping("/{patientId}")
 	NotificationData getNotificationDataById(@PathVariable long patientId) {
+		LOG.debug("*data-provider* request for getting notification data by patient id: {}", patientId);
 		return service.getNotificationData(patientId);
 	}
 }
