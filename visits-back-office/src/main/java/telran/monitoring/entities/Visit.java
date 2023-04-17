@@ -30,11 +30,6 @@ public class Visit {
     	this.patient = patient;
 		this.date = date;
 	}
-
-	@Override
-	public String toString() {
-		return "Visit [id=" + id + ", date=" + date + "]";
-	}
 	
 	public long getId() {
 		

@@ -29,28 +29,28 @@ public class VisitsServiceController {
 	VisitsService visitsService;
 	private static Logger LOG = LoggerFactory.getLogger(VisitsServiceController.class);
 	
-	@PostMapping("/patients")
+	@PostMapping("/patient")
 	String addPatient(@RequestBody @Valid PatientDto patient) {
 		LOG.info("*visits* request for adding patient: {}", patient.toString());
 		visitsService.addPatient(patient);
 		return String.format("patient %s was added", patient.toString());
 	}
 	
-	@PostMapping("/doctors")
+	@PostMapping("/doctor")
 	String addDoctor(@RequestBody @Valid DoctorDto doctor) {
 		LOG.info("*visits* request for adding patient: {}", doctor.toString());
 		visitsService.addDoctor(doctor);
 		return String.format("doctor %s was added", doctor.toString());
 	}
 	
-	@PostMapping("/visits")
+	@PostMapping("/visit")
 	String addVisit(@RequestBody @Valid VisitDto visit) {
 		LOG.info("*visits* request for adding patient: {}", visit.toString());
 		visitsService.addVisit(visit);
 		return String.format("visit %s was added", visit.toString());
 	}
 	
-	@GetMapping("/visits")
+	@GetMapping("/{patientId}")
 	List<VisitDto> getVisitsData(@PathVariable @Positive long patientId,
 			@RequestParam(name = "dateFrom", defaultValue = "", required = false) 
 	@Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "format required: yyyy-mm-dd") String from,

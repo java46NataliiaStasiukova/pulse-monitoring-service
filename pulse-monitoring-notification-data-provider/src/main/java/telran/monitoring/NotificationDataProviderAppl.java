@@ -8,10 +8,10 @@ import jakarta.annotation.PreDestroy;
 
 @SpringBootApplication
 @ComponentScan(basePackages= {"telran"})
-public class DataProviderAppl {
+public class NotificationDataProviderAppl {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DataProviderAppl.class, args);
+		SpringApplication.run(NotificationDataProviderAppl.class, args);
 
 	}
 	

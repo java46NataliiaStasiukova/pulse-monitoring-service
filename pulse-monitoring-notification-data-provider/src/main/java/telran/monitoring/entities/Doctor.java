@@ -19,11 +19,6 @@ public class Doctor {
 		this.email = email;
 		this.name = name;
 	}
-
-	@Override
-	public String toString() {
-		return "Doctor [email=" + email + ", name=" + name + "]";
-	}
 	
 	public String getEmail() {
 		

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name="visits", indexes = {@Index(columnList = "patient_id")})//quick search by patient id
 public class Visit {
@@ -29,11 +30,6 @@ public class Visit {
     	this.doctor = doctor;
     	this.patient = patient;
 		this.date = date;
-	}
-
-	@Override
-	public String toString() {
-		return "Visit [id=" + id + ", date=" + date + "]";
 	}
 	
 	public long getId() {

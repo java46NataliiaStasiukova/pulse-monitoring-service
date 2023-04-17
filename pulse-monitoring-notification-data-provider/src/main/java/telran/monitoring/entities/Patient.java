@@ -20,11 +20,6 @@ public class Patient {
 		this.id = id;
 		this.name = name;
 	}
-
-	@Override
-	public String toString() {
-		return "Patient [id=" + id + ", name=" + name + "]";
-	}
 	
 	public long getId() {
 		

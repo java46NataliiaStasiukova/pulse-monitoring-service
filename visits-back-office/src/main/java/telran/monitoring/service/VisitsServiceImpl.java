@@ -35,7 +35,7 @@ public class VisitsServiceImpl implements VisitsService {
 			throw new IllegalStateException(String.format("patient with id: %s already exists",
 					patientDto.getPatientId()));
 		}
-		LOG.debug("*visits* patient: {} was added to repository", patient.toString());
+		LOG.debug("*visits* patient: {} was added to repository", patientDto.toString());
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class VisitsServiceImpl implements VisitsService {
 			throw new IllegalStateException(String.format("doctor with id: %s already exist",
 					doctorDto.getDoctorEmail()));
 		}
-		LOG.debug("*visits* doctor: {} was added to repository", doctor.toString());
+		LOG.debug("*visits* doctor: {} was added to repository", doctorDto.toString());
 	}
 
 	@Override
